@@ -250,43 +250,101 @@ fake_first_names = c(
   "Lincoln"
 )
 
-#TO-DO
+norm = rnorm(100, 17, 38)
+uni = runif(100, min = -10, max = 10)
+pois = rpois(100, lambda = 6)
+exp = rexp(100, rate = 1/9)
+bin = rbinom(n = 100, size = 20, prob = 0.12)
+bern = c(seq(from = 1, to = 100, size = 100))
+
+sample_vec = sample(c(1:100), size = 100, replace = FALSE)
+j = 0
+for (i in sample_vec) {
+  if (j < 24) 
+    bern[i] = 1
+   else 
+    bern[i] = 0
+  j = j + 1
+}
+
+randm = cbind(norm, uni, pois, exp, bin, bern)
+rownames(randm) = fake_first_names
 ```
 
 * Create a data frame of the same data as above except make the binary variable a factor "DOMESTIC" vs "FOREIGN" for 0 and 1 respectively. Use RStudio's `View` function to ensure this worked as desired.
 
 ```{r}
-#TO-DO
+D_F = bern
+D_F[D_F == 0] = "DOMESTIC"
+D_F[D_F == 1] = "FOREIGN"
+
+df = data.frame(normal = norm, uniform = uni, poison = pois, exponential = exp, 
+                binomial = bin, "D v F" = factor(D_F, c("DOMESTIC", "FOREIGN")))
+View(df, "My data frame")
 ```
 
 * Print out a table of the binary variable. Then print out the proportions of "DOMESTIC" vs "FOREIGN".
 
 ```{r}
-#TO-DO
+table(df[, 6])
+prop.table(table(df[, 6]))
 ```
 
 Print out a summary of the whole dataframe.
 
 ```{r}
-#TO-DO
+summary(df)
 ```
 
 * Let `n = 50`. Create a n x n matrix `R` of exactly 50% entries 0's, 25% 1's 25% 2's. These values should be in random locations.
 
 ```{r}
-#TO-DO
+
+num_zero = 0
+num_one = 0
+
+rand_row_ind = sample(c(1:50), size = 50, replace = FALSE)
+rand_col_ind = sample(c(1:50), size = 50, replace = FALSE)
+mat = matrix(0, nrow = 50, ncol = 50)
+for (i in rand_row_ind) {
+  for (j in rand_col_ind){
+    if (num_zero < 1250) {
+      mat[i, j] = 0
+      num_zero = num_zero + 1
+    } else if (num_one < 625) {
+      mat[i, j] = 1
+      num_one = num_one + 1
+    } else {
+      mat[i, j] = 2
+    }
+  }
+}
 ```
 
 * Randomly punch holes (i.e. `NA`) values in this matrix so that an each entry is missing with probability 30%.
 
 ```{r}
-#TO-DO
+hole_punch_row_vec = sample(c(1:50), size = 50, replace = FALSE)
+hole_punch_col_vec = sample(c(1:50), size = 50, replace = FALSE)
+
+num_hole_punch = 0
+
+for (i in hole_punch_row_vec) {
+  for (j in hole_punch_col_vec) {
+    if (num_hole_punch >= 750) {
+      break
+    } else {
+      mat[i, j] = NA
+    }
+  }
+  break
+} 
 ```
 
 * Sort the rows in matrix `R` by the largest row sum to lowest. Be careful about the NA's!
 
 ```{r}
-#TO-DO
+mat[order(rowSums(mat, na.rm = TRUE),decreasing=T),]
 ```
 
 * We will now learn the `apply` function. This is a handy function that saves writing for loops which should be eschewed in R. Use the apply function to compute a vector whose entries are the standard deviation of each row. Use the apply function to compute a vector whose entries are the standard deviation of each column. Be careful about the NA's! This should be one line.
