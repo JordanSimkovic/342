@@ -318,7 +318,10 @@ for (i in rand_row_ind) {
       mat[i, j] = 2
     }
   }
+      rand_col_ind = sample(c(1:50), size = 50, replace = FALSE)
 }
+
+table(mat)
 ```
 
 * Randomly punch holes (i.e. `NA`) values in this matrix so that an each entry is missing with probability 30%.
@@ -335,10 +338,13 @@ for (i in hole_punch_row_vec) {
       break
     } else {
       mat[i, j] = NA
+      num_hole_punch = num_hole_punch + 1
     }
   }
-  break
+  hole_punch_col_vec = sample(c(1:50), size = 50, replace = FALSE)
 } 
+
+table(mat)
 ```
 
 * Sort the rows in matrix `R` by the largest row sum to lowest. Be careful about the NA's!
