@@ -349,49 +349,64 @@ apply(mat, 2, sd, na.rm = TRUE)
 * Use the `apply` function to compute a vector whose entries are the count of entries that are 1 or 2 in each column. This should be one line.
 
 ```{r}
-sum(apply(as.logical(mat), 2, sum, na.rm = TRUE))
+apply(mat == 1, 2, sum, na.rm = TRUE) + apply(mat == 2, 2, sum, na.rm = TRUE)
 ```
 
 * Use the `split` function to create a list whose keys are the column number and values are the vector of the columns. Look at the last example in the documentation `?split`.
 
 ```{r}
-#TO-DO
+split(mat, col(mat))
+
+
 ```
 
 * In one statement, use the `lapply` function to create a list whose keys are the column number and values are themselves a list with keys: "min" whose value is the minimum of the column, "max" whose value is the maximum of the column, "pct_missing" is the proportion of missingness in the column and "first_NA" whose value is the row number of the first time the NA appears.
 
 ```{r}
-#TO-DO
+#lapply(col(mat))
 ```
 
 * Set a seed and then create a vector `v` consisting of a sample of 1,000 iid normal realizations with mean -10 and variance 100.
 
 ```{r}
-#TO-DO
+set.seed(1984)
+v = rnorm(1000, -10, 100)
 ```
 
 * Repeat this exercise by resetting the seed to ensure you obtain the same results.
 
 ```{r}
-#TO-DO
+set.seed(1984)
+r = rnorm(1000, -10, 100)
+
+all.equal(v,r)
 ```
 
 * Find the average of `v` and the standard error of `v`.
 
 ```{r}
-#TO-DO
+mean(v)
+sd(v)
 ```
 
 * Find the 5%ile of `v` and use the `qnorm` function to compute what it theoretically should be. Is the estimate about what is expected by theory?
 
 ```{r}
-#TO-DO
+comp = quantile(v, .05)
+
+theo = qnorm(.05, -10, 100)
+
+all.equal(comp, theo)
 ```
 
 * What is the percentile of `v` that corresponds to the value 0? What should it be theoretically? Is the estimate about what is expected by theory?
 
 ```{r}
-#TO-DO
+comp = ecdf(v)(0)
+
+theo = pnorm(0, -10, 100)
+
+all.equal(comp, theo)
 ```
 
 
